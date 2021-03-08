@@ -14,7 +14,10 @@ public class Main extends PApplet{
 	}
 	
 	private int screenChange = 0;
-	
+	private int mil=0;
+	private int s=0;
+	private int score=0;
+
 	Screen screen;
 	Player player;
 	Baku baku;
@@ -44,17 +47,19 @@ public class Main extends PApplet{
 		drawScreen();
 		drawButtonSelect();
 		drawBacktHome();	
-		drawDataGame();
+		time();
+		score();
 		
 		drawEnemy();
 		initEnemy();	
 		
 		drawBaku();
-		initBaku();
+		initBaku();	
 		
 		drawPlayer();
 		
 		removeEnemy();
+		
 	}
 	
 	private void drawScreen() {
@@ -84,6 +89,9 @@ public class Main extends PApplet{
 	}
 	
 	private void initEnemy() {
+		if(screenChange==0) {
+			frameCount=0;
+		}
 		if(screenChange==1) {
 			frameRate(60);
 			if (frameCount == 150) {
@@ -156,13 +164,26 @@ public class Main extends PApplet{
 	}
 	
 	//TEMPORAL
-	private void drawDataGame() {
+	private void time() {
 		if(screenChange==1) {
 			textFont(myFont);
 			textAlign(CENTER, CENTER);
-		    text("10", 1100, 42);
-		    text("10", 960, 42);
-		}
+				if(mil<=59) {
+					text(s, 1110, 42);	
+					mil = mil + 1;
+					}else {
+						s = s+1;
+						mil= 0;
+						text(s, 1110, 42);	
+					}
+			}else {
+				s=0;
+			}
+	}
+	
+	private void score() {
+		text(score, 960, 42);
+		
 	}
 	
 	@Override
@@ -215,8 +236,7 @@ public class Main extends PApplet{
 
 	private void removeEnemy() {
 		for (int i = 0; i < enemyList.size(); i++) {
-			if (enemyList.get(i).getPosX() == bakuList.get(i).getPosX() &&
-				enemyList.get(i).getPosY() == bakuList.get(i).getPosY())  {
+			if (enemyList.get(i).getPosX() == bakuList.get(i).getPosX())  {
 				enemyList.remove(i);
 			}
 		}

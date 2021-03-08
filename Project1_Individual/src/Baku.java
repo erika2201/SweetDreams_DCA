@@ -11,12 +11,12 @@ public class Baku extends Character {
 		app.imageMode(app.CENTER);
 		app.image(baku, posX, posY);
 		app.imageMode(app.CORNER);
-		//mov(app);
+		mov(app);
 	}
 
 	@Override
 	public void mov(PApplet app) {
-		posY-=1;
+		posY-=10;
 	}
 	
 	
