@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import processing.core.PApplet;
 import processing.core.PFont;
 public class Main extends PApplet{
@@ -11,31 +13,48 @@ public class Main extends PApplet{
 		size(1200,700);
 	}
 	
-	//INSTANCES
-	Screen screen;
-	Player player;
-	
-	//VAR
 	private int screenChange = 0;
 	
-	//LOADFONTPOPPINS
+	Screen screen;
+	Player player;
+	Baku baku;
 	PFont myFont;
+	
+	private ArrayList<Enemy> enemyList;
+	private ArrayList<Baku> bakuList;
+	
+	boolean shoot;
+	
 	
 	@Override
 	public void setup() {
 		screen = new Screen(0, 0, this);
-		player = new Player(0,0,true, this);
+		player = new Player((width/2),600, this);
+		enemyList = new ArrayList<Enemy>();
+		bakuList = new ArrayList<Baku>();
+		baku = new Baku(0,0,this);
+		
+		shoot = false;
+		
 		myFont = createFont("Poppins-Regular.ttf", 20);
 	}
 	
 	@Override
 	public void draw() {
 		drawScreen();
-		drawPlayer();
 		drawButtonSelect();
 		drawBacktHome();	
 		drawDataGame();
-		//println(mouseX,mouseY);
+		
+		drawEnemy();
+		initEnemy();	
+		
+		drawBaku();
+		initBaku();
+		
+		drawPlayer();
+		
+		removeEnemy();
 	}
 	
 	private void drawScreen() {
@@ -60,7 +79,44 @@ public class Main extends PApplet{
 	
 	private void drawPlayer() {
 		if (screenChange==1) {
-			player.drawHinaki(this);
+			player.draw(this);
+		}
+	}
+	
+	private void initEnemy() {
+		if(screenChange==1) {
+			frameRate(60);
+			if (frameCount == 150) {
+				int posX = (int) random(-50, 10);
+				enemyList.add(new Enemy(posX, 150, this));
+				System.out.println(enemyList.size());
+				frameCount = 0;
+			}
+		}
+	}
+	
+	private void drawEnemy() {
+		if(screenChange==1) {
+		for (int i = 0; i < enemyList.size(); i++) {
+			enemyList.get(i).draw(this);
+			}
+		}
+	}
+	
+	private void drawBaku() {
+		if(screenChange==1) {
+			for (int i = 0; i < bakuList.size(); i++) {
+				bakuList.get(i).draw(this);
+				}
+			}
+	}
+	
+	private void initBaku() {
+		if(screenChange==1) {
+			if (shoot == true) {
+				bakuList.add(new Baku(player.getPosX(), player.getPosY(), this));
+				baku.mov(this);
+			}
 		}
 	}
 	
@@ -116,7 +172,7 @@ public class Main extends PApplet{
 	
 	private void movPlayer() {
 		if (screenChange==1) {
-			player.movPlayer(this);
+			player.mov(this);
 		}
 	}
 	
@@ -124,6 +180,7 @@ public class Main extends PApplet{
 	public void mousePressed() {
 		selectButton();
 		backHome();
+		shootBaku();
 	}
 	
 	private void selectButton() {
@@ -147,4 +204,22 @@ public class Main extends PApplet{
 				}
 			}
 		}
+	
+	private void shootBaku() {
+		if (screenChange==1) {
+			if(mouseX>100 && mouseX<1100 && mouseY>100 && mouseY<650) {
+				shoot=true;
+				}
+			}
+		}
+
+	private void removeEnemy() {
+		for (int i = 0; i < enemyList.size(); i++) {
+			if (enemyList.get(i).getPosX() == bakuList.get(i).getPosX() &&
+				enemyList.get(i).getPosY() == bakuList.get(i).getPosY())  {
+				enemyList.remove(i);
+			}
+		}
+	}
+
 }

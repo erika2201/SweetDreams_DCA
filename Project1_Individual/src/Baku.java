@@ -1,36 +1,39 @@
 import processing.core.PApplet;
 
-public class Enemy extends Character {
+public class Baku extends Character {
 
-	private boolean isMov;
-	
-	public Enemy(int posX, int posY, PApplet app) {
+	public Baku(int posX, int posY, PApplet app) {
 		super(posX, posY, app);
-		isMov = true;
 	}
 
 	@Override
 	public void draw(PApplet app) {
 		app.imageMode(app.CENTER);
-		app.image(enemy, posX, posY);
+		app.image(baku, posX, posY);
 		app.imageMode(app.CORNER);
-		mov(app);
+		//mov(app);
 	}
 
 	@Override
 	public void mov(PApplet app) {
-		if (isMov) {
-			posX+=1;
-		}
-
+		posY-=1;
 	}
 	
+	
+	public void setPosX() {
+		this.posX = posX;
+
+	}
+	public void setPosY(int posY) {
+		this.posY = posY;
+	}
+
 	public int getPosX() {
 		return posX;
 	}
+
 	public int getPosY() {
 		return posY;
 	}
-	
 
 }

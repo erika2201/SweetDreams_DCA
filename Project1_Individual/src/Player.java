@@ -1,28 +1,19 @@
 import processing.core.PApplet;
-import processing.core.PImage;
+public class Player extends Character {
 
-public class Player {
-
-	private int posX, posY;
-	private boolean isMov;
-	private PApplet app;
-	PImage player;
-	
-	public Player(int posX, int posY, boolean isMov, PApplet app) {
-		this.posX = app.width/2;
-		this.posY = 600;
-		isMov = true;
-		this.app = app;
-		player = app.loadImage("Player.png");
+	public Player(int posX, int posY, PApplet app) {
+		super(posX, posY, app);
 	}
-	
-	public void drawHinaki(PApplet app){
+
+	@Override
+	public void draw(PApplet app) {
 		app.imageMode(app.CENTER);
 		app.image(player, posX, posY);
 		app.imageMode(app.CORNER);
-		}
-	
-	public void movPlayer(PApplet app) {
+	}
+
+	@Override
+	public void mov(PApplet app) {
 		switch (app.key) {
 		case 'a' :
 			this.posX-= 100;
@@ -37,10 +28,38 @@ public class Player {
 				this.posX=1100;
 			}
 			break;
+		case 'w' :
+			this.posY-= 50;
+			if (this.posY<550) {
+				this.posY=550;
+			}
+			break;
+			
+		case 's' :
+			this.posY+= 50;
+			if (this.posY>600) {
+				this.posY=600;
+			}
+			break;
 		default:
 			break;
 		}
 	}
+	
+	public void setPosX() {
+		this.posX = posX;
+
+	}
+	public void setPosY(int posY) {
+		this.posY = posY;
+	}
+
+	public int getPosX() {
+		return posX;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
 
 }
-
