@@ -16,16 +16,7 @@ public class Baku extends Character {
 		app.imageMode(app.CENTER);
 		app.image(baku, posX, posY);
 		app.imageMode(app.CORNER);
-		posY-=5;
-	}
-	
-	
-	public void setPosX(int posX) {
-		this.posX = posX;
-
-	}
-	public void setPosY(int posY) {
-		this.posY = posY;
+		posY-=2;
 	}
 
 	public int getPosX() {

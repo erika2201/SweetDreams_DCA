@@ -1,8 +1,9 @@
 import java.util.ArrayList;
+
 import processing.core.PApplet;
 public class Player extends Character {
 
-	ArrayList<Baku> baku;
+	private ArrayList<Baku> baku;
 	
 	public Player(int posX, int posY, PApplet app) {
 		super(posX, posY, app);
@@ -63,15 +64,7 @@ public class Player extends Character {
 		Baku b = new Baku(this.posX, this.posY,app);
 		baku.add(b);
 	}
-
-	public void setPosX() {
-		this.posX = posX;
-
-	}
-	public void setPosY(int posY) {
-		this.posY = posY;
-	}
-
+	
 	public int getPosX() {
 		return posX;
 	}
@@ -80,4 +73,7 @@ public class Player extends Character {
 		return posY;
 	}
 
+	public ArrayList<Baku> getBaku() {
+		return baku;
+	}
 }

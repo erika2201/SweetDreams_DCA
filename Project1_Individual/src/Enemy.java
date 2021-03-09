@@ -22,6 +22,7 @@ public class Enemy extends Character {
 		if (isMov) {
 			posX+=2;
 		}
+	
 	}
 	
 	public int getPosX() {

@@ -18,6 +18,7 @@ public class Main extends PApplet{
 	private int s=0;
 	private int m=0;
 	private int score=0;
+	private int defeat=0;
 
 	Screen screen;
 	Player player;
@@ -25,14 +26,13 @@ public class Main extends PApplet{
 	PFont myFont;
 	
 	private ArrayList<Enemy> enemyList;
-	private ArrayList<Baku> bakuList;
+	
 	
 	@Override
 	public void setup() {
 		screen = new Screen(0, 0, this);
 		player = new Player((width/2),600, this);
 		enemyList = new ArrayList<Enemy>();
-		bakuList = new ArrayList<Baku>();
 		baku = new Baku(0,0,this);
 		
 		myFont = createFont("Poppins-Regular.ttf", 20);
@@ -70,6 +70,7 @@ public class Main extends PApplet{
 			break;
 		case 4:
 			screen.drawStatus(this);
+			finishGame();
 			break;
 		default:
 			break;
@@ -89,7 +90,7 @@ public class Main extends PApplet{
 		}
 		if(screenChange==1) {
 			frameRate(60);
-			if (frameCount == 150) {
+			if (frameCount == 120) {
 				int posX = (int) random(-50, 10);
 				enemyList.add(new Enemy(posX, 150, this));
 				System.out.println(enemyList.size());
@@ -102,6 +103,7 @@ public class Main extends PApplet{
 		if(screenChange==1) {
 		for (int i = 0; i < enemyList.size(); i++) {
 			enemyList.get(i).draw(this);
+			enemyList.get(i).mov(this);
 			}
 		}
 	}
@@ -133,7 +135,7 @@ public class Main extends PApplet{
 	}
 	
 	private void drawBacktHome() {
-		if(screenChange== 1 || screenChange==2 || screenChange==3) {
+		if(screenChange== 1 || screenChange==2 || screenChange==3 || screenChange==4) {
 			if(mouseX>41 && mouseX<116 && mouseY>35 && mouseY<53){
 				strokeWeight(2);
 				line(65, 60, 125, 60);;
@@ -166,6 +168,19 @@ public class Main extends PApplet{
 	
 	private void score() {
 		text(score, 960, 42);
+		
+	}
+	
+	private void finishGame() {
+		textFont(myFont);
+		text(score,230,322);
+		text(m+":"+s, 230, 367);
+		text(defeat, 370,408);
+		for (int i = 0; i < enemyList.size(); i++) {
+			if (dist(baku.getPosX(), baku.getPosY(), enemyList.get(i).getPosX(), enemyList.get(i).getPosY())<50)  {
+				defeat= defeat+1;
+			}
+		}
 		
 	}
 	
@@ -202,7 +217,7 @@ public class Main extends PApplet{
 	}
 	
 	private void backHome() {
-		if(screenChange== 1 || screenChange==2 || screenChange==3) {
+		if(screenChange== 1 || screenChange==2 || screenChange==3 || screenChange==4) {
 			if(mouseX>41 && mouseX<116 && mouseY>35 && mouseY<53){
 				screenChange=0;
 				}
@@ -222,12 +237,14 @@ public class Main extends PApplet{
 	}
 
 	private void removeEnemy() {
-		for (int i = 0; i < enemyList.size(); i++) {
-			if (dist(baku.getPosX(),baku.getPosY(),
-					enemyList.get(i).getPosX(),enemyList.get(i).getPosY())<25)  {
-				enemyList.remove(i);
+		for (int i = 0; i < player.getBaku().size(); i++) {
+			for (int j = 0; j < enemyList.size(); j++) {
+			if (dist(player.getBaku().get(i).getPosX(), player.getBaku().get(i).getPosY(),
+					enemyList.get(j).getPosX(), enemyList.get(j).getPosY())<50)  {
+					enemyList.remove(j);
+				}
 			}
+		
 		}
 	}
-
 }
