@@ -1,15 +1,24 @@
+import java.util.ArrayList;
 import processing.core.PApplet;
 public class Player extends Character {
 
+	ArrayList<Baku> baku;
+	
 	public Player(int posX, int posY, PApplet app) {
 		super(posX, posY, app);
+		baku = new ArrayList<>();
 	}
-
+	
 	@Override
 	public void draw(PApplet app) {
+		for (int i = 0; i < baku.size(); i++) {
+			baku.get(i).draw(app);
+		}
+		
 		app.imageMode(app.CENTER);
 		app.image(player, posX, posY);
 		app.imageMode(app.CORNER);
+		
 	}
 
 	@Override
@@ -46,6 +55,15 @@ public class Player extends Character {
 		}
 	}
 	
+	public void mousePressed() {
+		shoot();
+	}
+	
+	private void shoot() {
+		Baku b = new Baku(this.posX, this.posY,app);
+		baku.add(b);
+	}
+
 	public void setPosX() {
 		this.posX = posX;
 

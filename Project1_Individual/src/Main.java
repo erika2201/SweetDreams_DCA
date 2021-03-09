@@ -16,6 +16,7 @@ public class Main extends PApplet{
 	private int screenChange = 0;
 	private int mil=0;
 	private int s=0;
+	private int m=0;
 	private int score=0;
 
 	Screen screen;
@@ -26,9 +27,6 @@ public class Main extends PApplet{
 	private ArrayList<Enemy> enemyList;
 	private ArrayList<Baku> bakuList;
 	
-	boolean shoot;
-	
-	
 	@Override
 	public void setup() {
 		screen = new Screen(0, 0, this);
@@ -36,8 +34,6 @@ public class Main extends PApplet{
 		enemyList = new ArrayList<Enemy>();
 		bakuList = new ArrayList<Baku>();
 		baku = new Baku(0,0,this);
-		
-		shoot = false;
 		
 		myFont = createFont("Poppins-Regular.ttf", 20);
 	}
@@ -53,11 +49,7 @@ public class Main extends PApplet{
 		drawEnemy();
 		initEnemy();	
 		
-		drawBaku();
-		initBaku();	
-		
 		drawPlayer();
-		
 		removeEnemy();
 		
 	}
@@ -75,6 +67,9 @@ public class Main extends PApplet{
 			break;	
 		case 3:
 			screen.drawAbout(this);
+			break;
+		case 4:
+			screen.drawStatus(this);
 			break;
 		default:
 			break;
@@ -110,24 +105,7 @@ public class Main extends PApplet{
 			}
 		}
 	}
-	
-	private void drawBaku() {
-		if(screenChange==1) {
-			for (int i = 0; i < bakuList.size(); i++) {
-				bakuList.get(i).draw(this);
-				}
-			}
-	}
-	
-	private void initBaku() {
-		if(screenChange==1) {
-			if (shoot == true) {
-				bakuList.add(new Baku(player.getPosX(), player.getPosY(), this));
-				baku.mov(this);
-			}
-		}
-	}
-	
+
 	private void drawButtonSelect() {
 		if (screenChange==0) {
 			if(mouseX>427 && mouseX<770 && mouseY>267 && mouseY<331) {
@@ -169,15 +147,20 @@ public class Main extends PApplet{
 			textFont(myFont);
 			textAlign(CENTER, CENTER);
 				if(mil<=59) {
-					text(s, 1110, 42);	
+					text(m+":"+s, 1110, 42);	
 					mil = mil + 1;
 					}else {
 						s = s+1;
 						mil= 0;
-						text(s, 1110, 42);	
+						m = 0;
+						text(m+":"+s, 1110, 42);	
 					}
-			}else {
-				s=0;
+				
+				if(s>=59) {
+					m = m+1;
+					s=0;
+					text(m+":"+s, 1110, 42);	
+				}
 			}
 	}
 	
@@ -199,9 +182,9 @@ public class Main extends PApplet{
 	
 	@Override
 	public void mousePressed() {
-		selectButton();
-		backHome();
-		shootBaku();
+			selectButton();
+			backHome();	
+			shootBaku();
 	}
 	
 	private void selectButton() {
@@ -227,16 +210,21 @@ public class Main extends PApplet{
 		}
 	
 	private void shootBaku() {
-		if (screenChange==1) {
-			if(mouseX>100 && mouseX<1100 && mouseY>100 && mouseY<650) {
-				shoot=true;
-				}
+		if(screenChange==1) {
+		switch (mouseButton) {
+		case LEFT:
+			player.mousePressed();;
+			break;
+		default:
+			break;
 			}
 		}
+	}
 
 	private void removeEnemy() {
 		for (int i = 0; i < enemyList.size(); i++) {
-			if (enemyList.get(i).getPosX() == bakuList.get(i).getPosX())  {
+			if (dist(baku.getPosX(),baku.getPosY(),
+					enemyList.get(i).getPosX(),enemyList.get(i).getPosY())<25)  {
 				enemyList.remove(i);
 			}
 		}

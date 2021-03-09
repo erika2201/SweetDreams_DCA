@@ -8,19 +8,19 @@ public class Baku extends Character {
 
 	@Override
 	public void draw(PApplet app) {
-		app.imageMode(app.CENTER);
-		app.image(baku, posX, posY);
-		app.imageMode(app.CORNER);
 		mov(app);
 	}
 
 	@Override
 	public void mov(PApplet app) {
-		posY-=10;
+		app.imageMode(app.CENTER);
+		app.image(baku, posX, posY);
+		app.imageMode(app.CORNER);
+		posY-=5;
 	}
 	
 	
-	public void setPosX() {
+	public void setPosX(int posX) {
 		this.posX = posX;
 
 	}
