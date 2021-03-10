@@ -20,9 +20,13 @@ public class Enemy extends Character {
 	@Override
 	public void mov(PApplet app) {
 		if (isMov) {
-			posX+=2;
+			posX+=3;
 		}
-	
+		
+		if(posX>=1250) {
+		posX=-50;
+		posY=300;
+		}
 	}
 	
 	public int getPosX() {

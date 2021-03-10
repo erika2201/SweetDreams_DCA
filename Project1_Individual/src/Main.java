@@ -19,6 +19,7 @@ public class Main extends PApplet{
 	private int m=0;
 	private int score=0;
 	private int defeat=0;
+	private int forMinute=0;
 
 	Screen screen;
 	Player player;
@@ -61,6 +62,9 @@ public class Main extends PApplet{
 			break;
 		case 1:
 			screen.drawGame(this);
+			if(score>=50 || s>50) { //CHANGE WHEN FIX THE TIME
+				screenChange=4;
+			}
 			break;
 		case 2:
 			screen.drawInstru(this);
@@ -90,11 +94,12 @@ public class Main extends PApplet{
 		}
 		if(screenChange==1) {
 			frameRate(60);
-			if (frameCount == 120) {
+			if (frameCount == 50) {
 				int posX = (int) random(-50, 10);
 				enemyList.add(new Enemy(posX, 150, this));
 				System.out.println(enemyList.size());
 				frameCount = 0;
+				m=m+1;
 			}
 		}
 	}
@@ -159,7 +164,7 @@ public class Main extends PApplet{
 					}
 				
 				if(s>=59) {
-					m = m+1;
+					m = 0;
 					s=0;
 					text(m+":"+s, 1110, 42);	
 				}
@@ -176,12 +181,6 @@ public class Main extends PApplet{
 		text(score,230,322);
 		text(m+":"+s, 230, 367);
 		text(defeat, 370,408);
-		for (int i = 0; i < enemyList.size(); i++) {
-			if (dist(baku.getPosX(), baku.getPosY(), enemyList.get(i).getPosX(), enemyList.get(i).getPosY())<50)  {
-				defeat= defeat+1;
-			}
-		}
-		
 	}
 	
 	@Override
@@ -241,6 +240,8 @@ public class Main extends PApplet{
 			for (int j = 0; j < enemyList.size(); j++) {
 			if (dist(player.getBaku().get(i).getPosX(), player.getBaku().get(i).getPosY(),
 					enemyList.get(j).getPosX(), enemyList.get(j).getPosY())<50)  {
+					defeat= defeat+1;
+					score=score+1;
 					enemyList.remove(j);
 				}
 			}
